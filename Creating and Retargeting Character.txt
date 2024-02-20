@@ -1,0 +1,120 @@
+*Creating The Mesh*
+
+Create Mesh 
+ - Adjust world space
+ - Fit box around mesh
+ - Export as .obj to rig in blender
+ 
+ Ply option
+  - Merge by distance
+  - In Shading add new material
+  - Add Color Attributes node 
+  - Col for class/ Color to base color
+  - Adjust Roughness and specular
+
+*Creating the Rig*
+
+To center mesh
+ - in edit mode select two parrallel inner points on feet
+ - Shift/s cursor to selected
+ - in object mode right click > Set orgin to 3D cursor
+ - Alt G to reset location
+
+Scale and center mesh then apply all transforms
+
+Use ARP to create skeleton
+ - 'Match to rig' with nothing selected
+ - 'Bind' with Mesh then skeleton selected in object mode
+ 
+Adjust weight paint
+ - Select skeleton then mesh and change object mode to weight paint
+ 
+-- Character should be posable now --
+ 
+*Baking Texture*
+ 
+Use Cycles for scene render engine
+ - Choose CPU for device
+  
+Select everything in edit mode > U to smart UV Project
+ -island margin >= .005
+ 
+In details/ render properties set Bake Type to Diffuse
+ - Disable Direct and indirect
+ - Output Margin 2px
+ 
+Add image texture into material graph
+ - Create imagine to be baked on
+ - 1024 should work
+ 
+Add Diffuse BSDF node run color to that instead
+BSDF return to "Material Ouput" Surface
+ 
+Turn Subsurface all the way down
+ 
+With image texture and object selected in edit mode select bake 
+
+To remove blur change linear to closest 
+
+*Export FBX*
+
+Save the UV image
+ 
+Export FBX Pro/ Unreal/humanoid/disable export twist/enable root motion
+ - Rename/Add IK/Manny axes
+ 
+When Importing may have to drag texture into material graph and hook up base color
+
+--------------------------------------------------------------
+
+*Retargeting*
+
+open IK mannequin for reference
+
+In character Dir >Animation>Retargeting>IK Rig
+
+(In IK_Player)
+
+Add skeleton
+ 
+ 
+(ACTUAL WORKFLOW)
+*****************
+ - Retarget root at top
+ 
+ - For the rest of chains use New Retarget Chain from Selected Bones
+ 
+ - All spines as Spine
+ - Neck and head as Head
+ - Left shoulder to left hand as LeftArm
+ - Now do fingers, LeftThumb, LeftIndex, LeftPinky, LeftMiddle 
+ - LeftLeg
+ 
+Add IK Retargeter in same character Dir
+ - Copy from IK_Manny
+ - Name Retarget_Manny_To_Player
+ - Verify sources when opening 
+ 
+ Can adjust height with target offset
+ 
+Go into edit mode and match the meshes
+ 
+-- Can preview animations using the Asset Browser--
+ 
+ Add animation blueprint in character Dir
+
+(In Blueprint)
+ 
+Intro return to Pose Target From Mesh
+With Pose Target From Mesh selected chose IK_Retarget in details
+ 
+In 3rd person blueprint
+With Mesh selected add skeletal mesh component
+A char into that mesh asset
+Set up anim class with animation blueprint
+ 
+Create material in character Dir
+ - Transparent blend mode
+ - Hold 1 left click and return new node into opacity
+
+Change 3rd person blueprint element 0 and 1 to new invisible material
