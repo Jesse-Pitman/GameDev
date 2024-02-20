@@ -1,0 +1,29 @@
+*Basic Movement*
+
+Create Input folder in Main Content
+
+Create input action "IA_Move"
+ -make the value type Axis1d(float)
+
+Assign the "IA_Move" in the mapping context
+
+Clean up the button mapping so only left "A" and right "D" are an option
+Button to move left will need "Negate" modifier
+
+(In Player blueprint)
+
+Remove all nodes except for jump input
+
+Add "Get Player Controller" node 
+return > "Get Enhanced Local Player Subsystem"
+return> "Add Mapping Context" (Set mapping context)
+Execute node off "Event BeginPlay"
+
+Add IA_Move "Enhanced Action Input"
+Execute to "Add Movement Input"
+Add "Get Control Rotation" and "Get Right Vector"
+Split both of these nodes and connect their X and Z values
+"Get Right Return" connected to "Add Movement Input" World Direction
+IA_Move value connects to "Add Movement Input" Scale value
+
+--Player should now be able to move left and right--
